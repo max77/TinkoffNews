@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="news_title_background_normal">#FFFFFF</color>
+    <color name="news_title_background_selected">#C0C0C0</color>
 </resources>

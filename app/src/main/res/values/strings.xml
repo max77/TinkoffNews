@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TinkoffNews</string>
+    <string name="cached">(cached)</string>
 </resources>
