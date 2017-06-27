@@ -12,7 +12,7 @@ import com.example.mkomarovskiy.tinkoffnews.R;
 import com.example.mkomarovskiy.tinkoffnews.TinkoffNewsApplication;
 import com.example.mkomarovskiy.tinkoffnews.model.INewsTitle;
 import com.example.mkomarovskiy.tinkoffnews.model.RepositoryRequestResult;
-import com.example.mkomarovskiy.tinkoffnews.repository.INewsRepository;
+import com.example.mkomarovskiy.tinkoffnews.ui.details.NewsDetailsActivity;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +27,6 @@ public class NewsActivity extends AppCompatActivity implements NewsTitleListAdap
     private SwipeRefreshLayout mPullToRefreshLayout;
     private FrameLayout mDetailsContainer;
     private RecyclerView mNewsTitleList;
-    private INewsRepository mNewsRepository;
 
     private CompositeDisposable mNewsRequestDisposable = new CompositeDisposable();
 
@@ -35,8 +34,6 @@ public class NewsActivity extends AppCompatActivity implements NewsTitleListAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-
-        mNewsRepository = ((TinkoffNewsApplication) getApplication()).getNewsRepository();
 
         mDetailsContainer = (FrameLayout) findViewById(R.id.news_details_container);
         isInTwoPaneMode = mDetailsContainer != null;
@@ -47,13 +44,19 @@ public class NewsActivity extends AppCompatActivity implements NewsTitleListAdap
         mNewsTitleList = (RecyclerView) findViewById(R.id.news_list);
         mNewsTitleList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mNewsTitleList.setAdapter(new NewsTitleListAdapter(this));
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         loadNews(false);
     }
 
     private void loadNews(boolean forceRefresh) {
+        mNewsRequestDisposable.clear();
         mNewsRequestDisposable.add(
-                mNewsRepository
+                ((TinkoffNewsApplication) getApplication())
+                        .getNewsRepository()
                         .getNewsTitleList(forceRefresh)
                         .map(result -> {
                             if (result.isSuccess())
@@ -98,5 +101,6 @@ public class NewsActivity extends AppCompatActivity implements NewsTitleListAdap
     @Override
     public void onItemSelected(NewsTitleListAdapter adapter, int position, INewsTitle item) {
         adapter.setSelectedItemId(item.getId());
+        NewsDetailsActivity.show(this, item.getId());
     }
 }

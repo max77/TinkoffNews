@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by mkomarovskiy on 24/06/2017.
  */
 
-class BaseResult<T> {
+class BaseResponse<T> {
     private static final String RESULT_CODE_OK = "OK";
 
     @SerializedName("resultCode")

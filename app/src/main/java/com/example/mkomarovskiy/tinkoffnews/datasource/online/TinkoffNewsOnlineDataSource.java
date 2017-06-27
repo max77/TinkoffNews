@@ -3,8 +3,8 @@ package com.example.mkomarovskiy.tinkoffnews.datasource.online;
 import android.util.Log;
 
 import com.example.mkomarovskiy.tinkoffnews.BuildConfig;
-import com.example.mkomarovskiy.tinkoffnews.model.INewsTitle;
 import com.example.mkomarovskiy.tinkoffnews.model.INewsDetails;
+import com.example.mkomarovskiy.tinkoffnews.model.INewsTitle;
 import com.example.mkomarovskiy.tinkoffnews.repository.IOnlineDataSource;
 
 import java.util.ArrayList;
@@ -58,6 +58,6 @@ public class TinkoffNewsOnlineDataSource implements IOnlineDataSource {
     public Single<INewsDetails> getNewsDetailsById(long id) {
         return mRestClient
                 .getNewsDetailsById(id)
-                .cast(INewsDetails.class);
+                .map(BaseResponse::getPayload);
     }
 }

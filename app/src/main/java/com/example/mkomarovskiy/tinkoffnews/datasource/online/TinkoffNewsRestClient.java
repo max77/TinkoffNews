@@ -1,8 +1,10 @@
 package com.example.mkomarovskiy.tinkoffnews.datasource.online;
 
+import java.util.List;
+
 import io.reactivex.Single;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * TinkoffNews
@@ -11,8 +13,8 @@ import retrofit2.http.Path;
 
 public interface TinkoffNewsRestClient {
     @GET("/v1/news")
-    Single<NewsBlock> getNewsTitleList();
+    Single<BaseResponse<List<NewsTitle>>> getNewsTitleList();
 
-    @GET("/v1/news_content?id={id}")
-    Single<NewsDetails> getNewsDetailsById(@Path("id") long id);
+    @GET("/v1/news_content")
+    Single<BaseResponse<NewsDetails>> getNewsDetailsById(@Query("id") long id);
 }

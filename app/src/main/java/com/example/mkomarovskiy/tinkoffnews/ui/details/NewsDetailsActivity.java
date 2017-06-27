@@ -10,7 +10,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
     private static final String EXTRA_NEWS_ID = "newsid";
 
-    public static void show(Context context, String newsId) {
+    public static void show(Context context, long newsId) {
         context.startActivity(new Intent(context, NewsDetailsActivity.class)
                 .putExtra(EXTRA_NEWS_ID, newsId));
     }
@@ -25,12 +25,15 @@ public class NewsDetailsActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            String id = getIntent().getStringExtra(EXTRA_NEWS_ID);
-            if (id == null)
+            long id = getIntent().getLongExtra(EXTRA_NEWS_ID, -1);
+            if (id == -1)
                 return;
 
             NewsDetailsFragment details = NewsDetailsFragment.newInstance(id);
-            getFragmentManager().beginTransaction().add(android.R.id.content, details).commit();
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(android.R.id.content, details)
+                    .commit();
         }
     }
 }

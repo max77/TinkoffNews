@@ -7,5 +7,5 @@ import java.util.List;
  * Created by mkomarovskiy on 24/06/2017.
  */
 
-class NewsBlock extends BaseResult<List<NewsTitle>> {
+class NewsBlockResponse extends BaseResponse<List<NewsTitle>> {
 }
