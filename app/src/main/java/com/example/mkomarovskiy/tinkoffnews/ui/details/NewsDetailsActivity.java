@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
-public class NewsDetailsActivity extends AppCompatActivity {
+import com.example.mkomarovskiy.tinkoffnews.ui.BaseActivity;
+
+public class NewsDetailsActivity extends BaseActivity {
 
     private static final String EXTRA_NEWS_ID = "newsid";
 
@@ -35,5 +38,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
                     .add(android.R.id.content, details)
                     .commit();
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 }

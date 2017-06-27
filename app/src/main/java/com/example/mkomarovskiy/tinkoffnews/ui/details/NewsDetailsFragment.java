@@ -46,6 +46,12 @@ public class NewsDetailsFragment extends WebViewFragment {
             loadDewsDetails(id);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mNewsDetailsDisposable.clear();
+    }
+
     private void loadDewsDetails(long id) {
         mNewsDetailsDisposable.clear();
         mNewsDetailsDisposable.add(
@@ -57,8 +63,10 @@ public class NewsDetailsFragment extends WebViewFragment {
     }
 
     private void handleResult(RepositoryRequestResult<INewsDetails> result) {
-        if (result.isInProgress())
-            showDataInWebView(getString(R.string.loading));
+        if (result.isInProgress()) {
+            if (!result.isCached())
+                showDataInWebView(getString(R.string.loading));
+        }
 
         else if (result.isSuccess())
             showDataInWebView(result.getPayload().getContent());
@@ -73,11 +81,5 @@ public class NewsDetailsFragment extends WebViewFragment {
                 ClipDescription.MIMETYPE_TEXT_HTML,
                 StandardCharsets.UTF_8.name(),
                 "");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mNewsDetailsDisposable.clear();
     }
 }

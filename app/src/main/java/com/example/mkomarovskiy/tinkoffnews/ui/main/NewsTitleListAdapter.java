@@ -72,7 +72,7 @@ class NewsTitleListAdapter extends RecyclerView.Adapter<NewsTitleListAdapter.Vie
 
         holder.itemView.setOnClickListener(v -> {
             if (mListener != null)
-                mListener.onItemSelected(this, position, news);
+                mListener.onItemSelected(news);
         });
     }
 
@@ -90,7 +90,7 @@ class NewsTitleListAdapter extends RecyclerView.Adapter<NewsTitleListAdapter.Vie
         return mNewsTitles != null ? mNewsTitles.size() : 0;
     }
 
-    private int findItemPositionById(long id) {
+    public int findItemPositionById(long id) {
         for (int i = 0; i < mNewsTitles.size(); i++)
             if (id == mNewsTitles.get(i).getId())
                 return i;
@@ -110,6 +110,6 @@ class NewsTitleListAdapter extends RecyclerView.Adapter<NewsTitleListAdapter.Vie
     }
 
     public interface InteractionListener {
-        void onItemSelected(NewsTitleListAdapter adapter, int position, INewsTitle item);
+        void onItemSelected(INewsTitle item);
     }
 }
