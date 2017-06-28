@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 class NewsTitleListAdapter extends RecyclerView.Adapter<NewsTitleListAdapter.ViewHolder> {
-    private static final CharSequence NEWS_DATE_FORMAT = "dd/MM/yyyy @ HH:mm:ss z";
+    private static final CharSequence NEWS_DATE_FORMAT = "dd/MM/yyyy @ HH:mm:ss";
 
     private List<INewsTitle> mNewsTitles;
     private long mSelectedId = -1;

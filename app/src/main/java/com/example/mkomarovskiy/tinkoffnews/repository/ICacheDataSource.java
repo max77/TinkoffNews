@@ -1,7 +1,7 @@
 package com.example.mkomarovskiy.tinkoffnews.repository;
 
-import com.example.mkomarovskiy.tinkoffnews.model.INewsTitle;
 import com.example.mkomarovskiy.tinkoffnews.model.INewsDetails;
+import com.example.mkomarovskiy.tinkoffnews.model.INewsTitle;
 
 import java.util.List;
 
@@ -13,6 +13,8 @@ import io.reactivex.Single;
  */
 
 public interface ICacheDataSource {
+    Single<Void> clearCache();
+
     Single<List<INewsTitle>> getNewsTitleList();
 
     Single<List<INewsTitle>> saveNewsTitleList(List<INewsTitle> newsTitles);

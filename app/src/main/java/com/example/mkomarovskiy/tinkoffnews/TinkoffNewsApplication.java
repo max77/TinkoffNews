@@ -21,7 +21,7 @@ public class TinkoffNewsApplication extends Application {
 
         mNewsRepository = new NewsRepository(
                 new TinkoffNewsOnlineDataSource(BuildConfig.BACKEND_URL),
-                new TinkoffNewsLocalDBDataSource()
+                new TinkoffNewsLocalDBDataSource(this)
         );
     }
 

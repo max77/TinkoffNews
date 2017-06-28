@@ -48,8 +48,8 @@ public class NewsDetailsFragment extends WebViewFragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mNewsDetailsDisposable.clear();
+        super.onDestroy();
     }
 
     private void loadDewsDetails(long id) {

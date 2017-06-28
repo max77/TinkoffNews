@@ -36,8 +36,10 @@ public class NewsRepository implements INewsRepository {
     public Observable<RepositoryRequestResult<List<INewsTitle>>> getNewsTitleList(boolean forceReload) {
         return retrieveData(mOnlineDataSource
                         .getNewsTitleList()
-                        .flatMap(newsTitles ->
-                                mCacheDataSource.saveNewsTitleList(newsTitles)),
+                        .flatMap(newsTitles -> {
+                            mCacheDataSource.clearCache();
+                            return mCacheDataSource.saveNewsTitleList(newsTitles);
+                        }),
                 mCacheDataSource
                         .getNewsTitleList(),
                 forceReload,

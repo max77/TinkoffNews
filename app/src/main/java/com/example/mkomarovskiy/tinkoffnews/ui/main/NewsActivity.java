@@ -1,6 +1,6 @@
 package com.example.mkomarovskiy.tinkoffnews.ui.main;
 
-import android.app.FragmentTransaction;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +25,7 @@ public class NewsActivity extends BaseActivity implements NewsTitleListAdapter.I
 
     private static final String KEY_CURRENT_ITEM_ID = "itemid";
     private static final int ITEM_ID_FIRST = -1234;
+    private static final String TAG_DETAILS = "details";
 
     private boolean isInTwoPaneMode;
     private long mCurrentItemId = ITEM_ID_FIRST;
@@ -64,6 +65,21 @@ public class NewsActivity extends BaseActivity implements NewsTitleListAdapter.I
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(KEY_CURRENT_ITEM_ID, mCurrentItemId);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onPause() {
+        // A dirty hack to prevent automatic details fragment recreation
+
+        Fragment details = getFragmentManager().findFragmentByTag(TAG_DETAILS);
+
+        if (details != null)
+            getFragmentManager()
+                    .beginTransaction()
+                    .remove(details)
+                    .commit();
+
+        super.onPause();
     }
 
     @Override
@@ -120,7 +136,11 @@ public class NewsActivity extends BaseActivity implements NewsTitleListAdapter.I
                         .map(result -> {
                             if (result.isSuccess())
                                 Collections.sort(result.getPayload(), (o1, o2) ->
-                                        o1.getPublicationDate().after(o2.getPublicationDate()) ? -1 : 1);
+                                        o1.getPublicationDate().after(o2.getPublicationDate()) ?
+                                                -1 :
+                                                o1.getPublicationDate().before(o2.getPublicationDate()) ?
+                                                        1
+                                                        : o1.getId() > o2.getId() ? 1 : -1);
                             return result;
                         })
                         .observeOn(AndroidSchedulers.mainThread())
@@ -131,8 +151,7 @@ public class NewsActivity extends BaseActivity implements NewsTitleListAdapter.I
     private void loadNewsDetails(long id) {
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.news_details_container, NewsDetailsFragment.newInstance(id))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.news_details_container, NewsDetailsFragment.newInstance(id), TAG_DETAILS)
                 .commit();
     }
 
