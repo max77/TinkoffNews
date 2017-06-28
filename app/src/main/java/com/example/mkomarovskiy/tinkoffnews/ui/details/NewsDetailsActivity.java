@@ -32,11 +32,12 @@ public class NewsDetailsActivity extends BaseActivity {
             if (id == -1)
                 return;
 
-            NewsDetailsFragment details = NewsDetailsFragment.newInstance(id);
+            NewsDetailsFragment details = new NewsDetailsFragment();
             getFragmentManager()
                     .beginTransaction()
                     .add(android.R.id.content, details)
                     .commit();
+            details.loadDewsDetails(id);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -1,6 +1,5 @@
 package com.example.mkomarovskiy.tinkoffnews.ui.main;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +31,7 @@ public class NewsActivity extends BaseActivity implements NewsTitleListAdapter.I
 
     private SwipeRefreshLayout mPullToRefreshLayout;
     private RecyclerView mNewsTitleList;
+    private NewsDetailsFragment mDetailsFragment;
 
     private CompositeDisposable mNewsRequestDisposable = new CompositeDisposable();
 
@@ -65,21 +65,6 @@ public class NewsActivity extends BaseActivity implements NewsTitleListAdapter.I
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(KEY_CURRENT_ITEM_ID, mCurrentItemId);
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onPause() {
-        // A dirty hack to prevent automatic details fragment recreation
-
-        Fragment details = getFragmentManager().findFragmentByTag(TAG_DETAILS);
-
-        if (details != null)
-            getFragmentManager()
-                    .beginTransaction()
-                    .remove(details)
-                    .commit();
-
-        super.onPause();
     }
 
     @Override
@@ -149,10 +134,17 @@ public class NewsActivity extends BaseActivity implements NewsTitleListAdapter.I
     }
 
     private void loadNewsDetails(long id) {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.news_details_container, NewsDetailsFragment.newInstance(id), TAG_DETAILS)
-                .commit();
+        mDetailsFragment = (NewsDetailsFragment) getFragmentManager().findFragmentByTag(TAG_DETAILS);
+
+        if (mDetailsFragment == null) {
+            mDetailsFragment = new NewsDetailsFragment();
+            getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.news_details_container, mDetailsFragment, TAG_DETAILS)
+                    .commit();
+        }
+
+        mDetailsFragment.loadDewsDetails(id);
     }
 
     private void handleRequestResult(RepositoryRequestResult<List<INewsTitle>> result) {
